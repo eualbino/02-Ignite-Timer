@@ -1,13 +1,11 @@
-import { ButtonContainer, ButtonVariant } from './Button.styles.ts';
+import { ButtonContainer, ButtonVariant } from './Button.styles.ts'
 
-interface ButtonProps{
-    variant?: ButtonVariant;
+interface ButtonProps {
+  variant?: ButtonVariant
 }
 
 const Button = ({ variant = 'primary' }: ButtonProps) => {
-    return ( 
-        <ButtonContainer variant={variant}>Enviar</ButtonContainer>
-    );
+  return <ButtonContainer variant={variant}>Enviar</ButtonContainer>
 }
 
-export default Button;
+export default Button
