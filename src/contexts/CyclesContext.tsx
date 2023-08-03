@@ -42,7 +42,7 @@ const CyclesContextProvider = ({ children }: CyclesContextProviderProps) => {
       cycles: [],
       activeCycleId: null,
     },
-    () => {
+    (initialState) => {
       const storedStateAsJSON = localStorage.getItem(
         '@ignite-timer:cycles-state-1.0.0',
       )
@@ -50,20 +50,25 @@ const CyclesContextProvider = ({ children }: CyclesContextProviderProps) => {
       if (storedStateAsJSON) {
         return JSON.parse(storedStateAsJSON)
       }
+
+      return initialState
     },
   )
 
   const { cycles, activeCycleId } = cyclesState
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+
   const [amountSecondsPast, setAmountSecondsPast] = useState(() => {
     if (activeCycle) {
       return differenceInSeconds(new Date(), new Date(activeCycle.startDate))
     }
+
     return 0
   })
 
   useEffect(() => {
     const stateJSON = JSON.stringify(cyclesState)
+
     localStorage.setItem('@ignite-timer:cycles-state-1.0.0', stateJSON)
   }, [cyclesState])
 
@@ -72,7 +77,7 @@ const CyclesContextProvider = ({ children }: CyclesContextProviderProps) => {
   }
 
   function markCurrentCycleAsFinished() {
-    dispatch(markCurrentCycleAsFinishedAction)
+    dispatch(markCurrentCycleAsFinishedAction())
   }
 
   function createNewCycle(data: CreateCycleData) {
@@ -91,7 +96,7 @@ const CyclesContextProvider = ({ children }: CyclesContextProviderProps) => {
   }
 
   function interruptCurrentCycle() {
-    dispatch(interruptCurrentCycleAction)
+    dispatch(interruptCurrentCycleAction())
   }
 
   return (
@@ -111,5 +116,4 @@ const CyclesContextProvider = ({ children }: CyclesContextProviderProps) => {
     </CycleContext.Provider>
   )
 }
-
 export default CyclesContextProvider
